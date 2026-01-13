@@ -1,167 +1,362 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Icsaltby's Profile</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Icsaltby | Fudan University</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <style>
-        /* 全局设置 */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+      /* --- 全局设置 --- */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+        background-image: url("suitcase.png");
+
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; /* 背景固定，产生视差效果 */
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* --- 主容器 (白条卡片) --- */
+      .container {
+        background-color: rgba(255, 255, 255, 0.98);
+        width: 100%;
+        max-width: 1000px; /* 稍微宽一点以容纳侧边栏 */
+        height: 90vh; /* 限制高度让内部滚动 */
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        display: flex;
+        overflow: hidden; /* 隐藏溢出，保持圆角 */
+      }
+
+      /* --- 左侧边栏 (NexT 风格) --- */
+      .sidebar {
+        width: 280px;
+        background-color: #f5f7f9; /* 淡灰背景 */
+        border-right: 1px solid #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        flex-shrink: 0; /* 防止被挤压 */
+        overflow-y: auto; /* 侧边栏内容多时也可以滚 */
+      }
+
+      /* 头像特效 */
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+        transition: transform 0.6s ease-in-out;
+        object-fit: cover;
+      }
+      .avatar:hover {
+        transform: rotate(360deg); /* 经典的旋转特效 */
+      }
+
+      .author-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #222;
+        margin-bottom: 5px;
+      }
+      .author-desc {
+        font-size: 0.85rem;
+        color: #777;
+        margin-bottom: 30px;
+        text-align: center;
+        line-height: 1.4;
+      }
+
+      /* 导航菜单 */
+      .nex-menu {
+        width: 100%;
+        text-align: left;
+      }
+      .menu-item {
+        display: block;
+        padding: 12px 20px;
+        margin-bottom: 8px;
+        color: #555;
+        text-decoration: none;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      .menu-item i {
+        width: 25px;
+        text-align: center;
+        margin-right: 5px;
+        color: #333;
+      }
+
+      /* 菜单悬停效果 */
+      .menu-item:hover {
+        background-color: #e2e8f0;
+        color: #000;
+        padding-left: 25px;
+      }
+
+      /* 底部社交图标 */
+      .social-links {
+        margin-top: auto;
+        padding-top: 20px;
+        display: flex;
+        gap: 15px;
+      }
+      .social-links a {
+        color: #555;
+        font-size: 1.2rem;
+        transition: 0.3s;
+      }
+      .social-links a:hover {
+        color: #000;
+        transform: scale(1.1);
+      }
+
+      /* --- 右侧内容区 --- */
+      .main-content {
+        flex: 1;
+        padding: 50px;
+        overflow-y: auto; /* 只有右边滚动 */
+      }
+
+      /* 内容样式 */
+      h2 {
+        font-size: 1.4rem;
+        color: #222;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
+      h2:first-child {
+        margin-top: 0;
+      } /* 第一个标题不用上边距 */
+
+      h3 {
+        font-size: 1.1rem;
+        color: #007bff;
+        margin-bottom: 5px;
+      }
+
+      p {
+        margin-bottom: 15px;
+        line-height: 1.7;
+        color: #444;
+      }
+
+      .date {
+        font-size: 0.85rem;
+        color: #999;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      /* 标签样式 */
+      .tag {
+        display: inline-block;
+        background: #f0f2f5;
+        color: #555;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        border: 1px solid #e1e4e8;
+      }
+
+      /* --- 手机端适配 --- */
+      @media (max-width: 768px) {
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            /* --- 背景图片设置 --- */
-            /* 下面这个 URL 是背景图，你可以换成你自己的图片链接 */
-            background-image: url('suitcase.png'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+          padding: 0;
+          align-items: flex-start;
         }
-
-        /* 中间白条卡片容器 */
         .container {
-            background-color: rgba(255, 255, 255, 0.95); /* 白色背景，轻微透明 */
-            width: 100%;
-            max-width: 900px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex; /* 开启左右布局 */
-            overflow: hidden;
-            flex-direction: row;
+          flex-direction: column;
+          height: auto;
+          border-radius: 0;
+          max-width: 100%;
+          box-shadow: none;
         }
-
-        /* 左侧：照片区域 */
         .sidebar {
-            background-color: #f8f9fa;
-            width: 35%;
-            padding: 40px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-right: 1px solid #eee;
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid #eee;
+          padding: 30px 20px;
         }
-
-        /* 头像图片 */
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%; /* 圆形头像 */
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        /* 右侧：主要内容区域 */
         .main-content {
-            width: 65%;
-            padding: 40px;
+          padding: 30px 20px;
+          overflow-y: visible;
         }
-
-        /* 字体样式 */
-        h1 { font-size: 2.2rem; color: #2c3e50; margin-bottom: 5px; }
-        h2 { font-size: 1.2rem; color: #007bff; margin-top: 25px; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        .school-info { color: #666; font-size: 0.9rem; margin-bottom: 5px; }
-        p { margin-bottom: 10px; }
-        
-        /* 技能标签样式 */
-        .tag {
-            display: inline-block;
-            background: #eef2f7;
-            color: #4a5568;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
+        .nex-menu {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
         }
-
-        /* 按钮样式 */
-        .btn-group { margin-top: 10px; }
-        .btn {
-            display: inline-block;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            background-color: #333;
-            color: white;
-            font-size: 0.9rem;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            transition: 0.2s;
+        .menu-item {
+          margin: 5px;
+          background: #f8f9fa;
         }
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
-        .btn-bilibili { background-color: #fb7299; }
-        .btn-github { background-color: #24292e; }
-        .btn-x { background-color: #000; }
-        .btn-mail { background-color: #007bff; }
-
-        /* --- 手机端适配 (当屏幕宽度小于 768px 时) --- */
-        @media (max-width: 768px) {
-            .container { flex-direction: column; } /* 改为上下布局 */
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #eee; padding: 30px 20px; }
-            .main-content { width: 100%; padding: 25px; }
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="container">
-        <div class="sidebar">
-            <img src="1.jpg" alt="Profile Photo" class="avatar">
-            
-            <h1>Icsaltby</h1>
-            <div style="margin-top: 20px; text-align: left; width: 100%;">
-                <div class="school-info">🏛️ 2023 - Present<br><b>Fudan University</b></div>
-                <div class="school-info" style="margin-top:10px;">🏫 2017 - 2023<br>Chaoyang Experimental School</div>
-            </div>
+      <div class="sidebar">
+        <img
+          src="me.jpg"
+          alt="Icsaltby"
+          class="avatar"
+          onerror="this.src='https://ui-avatars.com/api/?name=Icsaltby&background=333&color=fff&size=256'"
+        />
+
+        <div class="author-name">Icsaltby</div>
+        <p class="author-desc">
+          Fudan University<br />
+          Confidentiality Tech
+        </p>
+
+        <nav class="nex-menu">
+          <a href="#about" class="menu-item">
+            <i class="fa fa-user"></i> 关于 (About)
+          </a>
+          <a href="#experience" class="menu-item">
+            <i class="fa fa-briefcase"></i> 经历 (Exp)
+          </a>
+          <a href="#skills" class="menu-item">
+            <i class="fa fa-code"></i> 技能 (Skills)
+          </a>
+          <a href="#contact" class="menu-item">
+            <i class="fa fa-envelope"></i> 联系 (Contact)
+          </a>
+          <a
+            href="https://github.com/icsaltby"
+            target="_blank"
+            class="menu-item"
+          >
+            <i class="fab fa-github"></i> GitHub
+          </a>
+        </nav>
+
+        <div class="social-links">
+          <a
+            href="https://space.bilibili.com/202626892"
+            title="Bilibili"
+            target="_blank"
+            ><i class="fab fa-bilibili"></i
+          ></a>
+          <a href="https://github.com/icsaltby" title="GitHub" target="_blank"
+            ><i class="fab fa-github"></i
+          ></a>
+          <a href="https://x.com/icsaltby" title="X / Twitter" target="_blank"
+            ><i class="fa-brands fa-x-twitter"></i
+          ></a>
+          <a href="mailto:icsaltby@163.com" title="Email"
+            ><i class="fa fa-envelope"></i
+          ></a>
         </div>
+      </div>
 
-        <div class="main-content">
-            
-            <h2>🌈 About Me</h2>
-            <p>A student at Fudan University, majoring in <b>confidentiality technology</b>.</p>
+      <div class="main-content">
+        <section id="about">
+          <h2>🌈 About Me</h2>
+          <p>
+            Hello! I am a student at <b>Fudan University</b>, majoring in
+            Confidentiality Technology. I have a passion for cybersecurity, game
+            development, and music.
+          </p>
+          <p>I am eager to learn the latest tech trends.</p>
+          <div style="margin-top: 15px">
+            <span class="tag">🎮 Godot Enthusiast</span>
+            <span class="tag">🎸 Guitar Lover</span>
+            <span class="tag">🖥️ JavaScript & CyberSec</span>
+          </div>
+        </section>
+
+        <section id="experience">
+          <h2>📋 Experience</h2>
+
+          <div class="job-item">
+            <h3>IT Support Staff - PCS at Fudan</h3>
+            <span class="date">Mar 6, 2025 - July 30, 2025</span>
             <p>
-                <span class="tag">🎮 Godot enthusiast</span>
-                <span class="tag">🎸 Guitar lover</span>
-                <span class="tag">🖥️ JavaScript & CyberSec</span>
+              At PCS, I was responsible for answering questions and providing
+              useful help. I worked closely with other members when encountering
+              problems.
             </p>
-            <p style="font-size: 0.9em; color: #666;">A creative thinker and problem solver, always studying the latest trends.</p>
+          </div>
 
-            <h2>📋 Experience</h2>
-            <div style="margin-bottom: 15px;">
-                <strong>IT Support Staff - PCS at Fudan</strong><br>
-                <span style="font-size: 0.85rem; color: #888;">Mar 6, 2025 - July 30, 2025</span>
-                <p style="font-size: 0.95rem; margin-top: 5px;">At PCS, I was responsible for answering questions and providing useful help. I worked closely with other members when encountering problems.</p>
-            </div>
-
-            <h2>⭐ Skills</h2>
+          <div class="job-item" style="margin-top: 20px">
+            <h3>Education</h3>
             <p>
-                <span class="tag">C++ Programming</span>
-                <span class="tag">WPS Office</span>
-                <span class="tag">Video Editing</span>
+              <b>Fudan University</b> (2023 - Present)<br />
+              <span style="font-size: 0.9em; color: #666"
+                >Confidentiality Technology</span
+              >
             </p>
+          </div>
+        </section>
 
-            <h2>📱 Social Media & Contact</h2>
-            <div class="btn-group">
-                <a href="https://space.bilibili.com/202626892" class="btn btn-bilibili" target="_blank">📺 Bilibili</a>
-                <a href="https://github.com/icsaltby" class="btn btn-github" target="_blank">GitHub</a>
-                <a href="https://x.com/icsaltby" class="btn btn-x" target="_blank">X (Twitter)</a>
-                <a href="mailto:icsaltby@163.com" class="btn btn-mail">📬 Email Me</a>
-            </div>
-            
-            <p style="margin-top: 20px; font-size: 0.8rem; color: #999;">
-                Thanks for stopping by my corner of the internet! 💫
-            </p>
-        </div>
+        <section id="skills">
+          <h2>⭐ Skills</h2>
+          <p>My technical stack includes:</p>
+          <div>
+            <span class="tag">C++ Programming</span>
+            <span class="tag">WPS Office Suite</span>
+            <span class="tag">Video Editing</span>
+            <span class="tag">HTML/CSS</span>
+          </div>
+        </section>
+
+        <section id="contact">
+          <h2>📬 Contact</h2>
+          <p>
+            Feel free to reach out to me via email or social media. Let's
+            connect and learn together!
+          </p>
+          <p>
+            <b>Email:</b>
+            <a
+              href="mailto:icsaltby@163.com"
+              style="color: #007bff; text-decoration: none"
+              >icsaltby@163.com</a
+            >
+          </p>
+          <p
+            style="
+              margin-top: 30px;
+              font-size: 0.8rem;
+              color: #999;
+              border-top: 1px dashed #eee;
+              padding-top: 10px;
+            "
+          >
+            © 2025 Icsaltby. Thanks for stopping by my corner of the internet!
+            💫
+          </p>
+        </section>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>
